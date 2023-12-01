@@ -12,7 +12,7 @@ build-parameters:
         - npx -p @sap/cds-dk cds build --production
         - cp pg-package.json gen/pg/package.json
         - cp package-lock.json gen/pg/package-lock.json
-        
+
 modules:
   - name: sap-cap-postgresql-srv
     type: nodejs
@@ -26,7 +26,8 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: postgres
+      - name: postgresql
+      - name: sap-cap-postgresql-auth
 
   - name: sap-cap-postgresql-postgres-deployer
     type: nodejs
@@ -39,11 +40,11 @@ modules:
         - name: deploy-to-postgresql
           command: npm start
     requires:
-      - name: postgres
+      - name: postgresql
 
-# ------------------------------------------------------------
-# name: postgres-adminer
-# ------------------------------------------------------------
+  # ------------------------------------------------------------
+  # name: postgres-adminer
+  # ------------------------------------------------------------
   - name: postgres-adminer
     type: application
     build-parameters:
@@ -51,19 +52,28 @@ modules:
     parameters:
       # Only needed to track down issues in the PostgreSQL Database deployment
       no-route: false
-      no-start: false 
+      no-start: false
       disk-quota: 1GB
       memory: 1024MB
       docker:
         image: dockette/adminer:pgsql
       instances: 1
     requires:
-    - name: postgres
+      - name: postgresql
 
 resources:
-  - name: postgres
+  - name: postgresql
     type: org.cloudfoundry.managed-service
     parameters:
       service: postgresql-db
       service-plan: trial
       path: ./pg-options.json
+  - name: sap-cap-postgresql-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: sap-cap-postgresql-${org}-${space}
+        tenant-mode: dedicated

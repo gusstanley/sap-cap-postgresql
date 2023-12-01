@@ -8,9 +8,9 @@
   "dependencies": {
     "@cap-js/postgres": "^1.4.1",
     "@sap/cds": "^7",
-    "@sap/xssec": "^3.6.0",
     "express": "^4",
-    "passport": "^0.7.0"
+    "@sap/xssec": "^3",
+    "passport": "^0"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
@@ -21,5 +21,10 @@
     "start": "cds-serve",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+  },
+  "cds": {
+    "requires": {
+      "auth": "xsuaa"
+    }
   }
 }
