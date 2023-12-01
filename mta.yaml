@@ -41,6 +41,25 @@ modules:
     requires:
       - name: postgres
 
+# ------------------------------------------------------------
+# name: postgres-adminer
+# ------------------------------------------------------------
+  - name: postgres-adminer
+    type: application
+    build-parameters:
+      no-source: true
+    parameters:
+      # Only needed to track down issues in the PostgreSQL Database deployment
+      no-route: false
+      no-start: false 
+      disk-quota: 1GB
+      memory: 1024MB
+      docker:
+        image: dockette/adminer:pgsql
+      instances: 1
+    requires:
+    - name: postgres
+
 resources:
   - name: postgres
     type: org.cloudfoundry.managed-service
