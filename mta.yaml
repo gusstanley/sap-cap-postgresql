@@ -8,7 +8,11 @@ build-parameters:
   before-all:
     - builder: custom
       commands:
-        - npx cds build --production
+        - npm install
+        - npx -p @sap/cds-dk cds build --production
+        - cp pg-package.json gen/pg/package.json
+        - cp package-lock.json gen/pg/package-lock.json
+        
 modules:
   - name: sap-cap-postgresql-srv
     type: nodejs
