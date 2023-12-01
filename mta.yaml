@@ -1,4 +1,3 @@
----
 _schema-version: '3.1'
 ID: sap-cap-postgresql
 version: 1.0.0
@@ -22,4 +21,26 @@ modules:
       - name: srv-api # required by consumers of CAP services (e.g. approuter)
         properties:
           srv-url: ${default-url}
-    requires: []
+    requires:
+      - name: postgres
+
+  - name: sap-cap-postgresql-postgres-deployer
+    type: nodejs
+    path: gen/pg
+    parameters:
+      buildpack: nodejs_buildpack
+      no-route: true
+      no-start: true
+      tasks:
+        - name: deploy-to-postgresql
+          command: npm start
+    requires:
+      - name: postgres
+
+resources:
+  - name: postgres
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: postgresql-db
+      service-plan: trial
+      path: ./pg-options.json
