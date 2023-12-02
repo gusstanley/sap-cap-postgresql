@@ -20,10 +20,12 @@
   "scripts": {
     "start": "cds-serve",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
-    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "build:db": "docker-compose -f pg.yml up -d && cds deploy"
   },
   "cds": {
     "requires": {
+      "_comment": "For BTP Development use xsuaa while for local development use mocked",
       "auth": "xsuaa"
     }
   }
