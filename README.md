@@ -1,6 +1,12 @@
 # SAP Cap Application using PostgreSQL 
 
 This project implements the cap framework on BTP with its pre-requisites to use PostgreSQL.
+Repository: https://github.com/guhstanley/sap-cap-postgresql
+
+#### Authors: 
+- Gustavo Stanley Silva
+- Mateus Oliveira
+
 
 ## Requirements
 
